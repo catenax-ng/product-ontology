@@ -41,8 +41,8 @@
                                               dc:contributor "Oguzhan Balandi" ;
                                               dc:creator "Christoph Jung" ;
                                               dc:date "2023-07-04"^^xsd:date ;
-                                              dc:description "Ontology for behaviour predictions." ;
-                                              dc:title "Behaviour Ontology" ;
+                                              rdfs:comment "Ontology for behaviour predictions." ;
+                                              rdfs:label "Behaviour Ontology" ;
                                               owl:imports <file:common_ontology.ttl>;
                                               owl:imports <file:core_ontology.ttl>;
                                               owl:imports <file:function_ontology.ttl>;
@@ -50,153 +50,244 @@
                                               owl:imports <file:reliability_ontology.ttl>;
                                               owl:versionInfo "1.10.2" .
 
-cx-behaviour:RemainingUsefulLife rdf:type cx-fx:Function;
-  dc:description "Remaining Useful Life is a Prediction of the Estimated Mileage/Runtime until a Breakdown."@en ;
-  dc:title "Remaining Useful Life" ;
-  cx-fx:input cx-behaviour:notification;
-  cx-fx:input cx-behaviour:sender;
-  cx-fx:input cx-behaviour:senderConnector;
-  cx-fx:input cx-behaviour:recipient;
-  cx-fx:input cx-behaviour:recipientConnector;
-  cx-fx:input cx-behaviour:recipient;
-  cx-fx:input cx-behaviour:recipientConnector;
-  cx-fx:input cx-behaviour:severity;
-  cx-fx:input cx-behaviour:status;
-  cx-fx:input cx-behaviour:targetDate;
-  cx-fx:input cx-behaviour:timeStamp;
-  cx-fx:input cx-behaviour:classification;
-  cx-fx:input cx-behaviour:component;
-  cx-fx:input cx-behaviour:metadata;
-  cx-fx:input cx-behaviour:statusDate;
-  cx-fx:input cx-behaviour:statusOperatingHours;
-  cx-fx:input cx-behaviour:statusMileage;
-  cx-fx:input cx-behaviour:countingMethod;
-  cx-fx:input cx-behaviour:countingValue;
-  cx-fx:input cx-behaviour:countingUnit;
-  cx-fx:input cx-behaviour:headerChannels;
-  cx-fx:input cx-behaviour:bodyClasses;
-  cx-fx:input cx-behaviour:bodyCountsList;
-  cx-fx:result cx-behaviour:response.
+cx-behaviour:PrognosisFunction rdfs:subClassOf cx-fx:Function.
 
-cx-behaviour:notification rdf:type cx-fx:Argument;
-  dc:description "An optional notification output template."@en ;
-  dc:title "Notification Template";
+cx-behaviour:HealthIndication rdfs:subClassOf cx-behaviour:PrognosisFunction;
+  rdfs:comment "Health Indication is an evaluation function operating on batches of load collectives and adaptive values."@en ;
+  rdfs:label "Health Indication" .
+
+cx-behaviour:RemainingUsefulLife rdfs:subClassOf cx-behaviour:PrognosisFunction;
+  rdfs:comment "Remaining Useful Life is a Prediction of the Estimated Mileage/Runtime until a Breakdown."@en ;
+  rdfs:label "Remaining Useful Life".
+
+cx-behaviour:prognosisFunctionArgument rdf:type owl:DatatypeProperty;
+  rdfs:subPropertyOf cx-fx:argument;
+  rdfs:domain cx-behaviour:PrognosisFunction.
+
+cx-behaviour:RemainingUsefulLifeArgument rdf:type owl:DatatypeProperty;
+  rdfs:domain cx-behaviour:RemainingUsefulLife;
+  rdfs:subPropertyOf cx-behaviour:PrognosisFunctionArgument.
+
+cx-behaviour:HealthIndicationArgument rdf:type owl:DatatypeProperty;
+  rdfs:domain cx-behaviour:HealthIndication;
+  rdfs:subPropertyOf cx-behaviour:PrognosisFunctionArgument.
+
+cx-behaviour:notification rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment"An optional notification output template."@en ;
+  rdfs:label "Notification Template";
   cx-fx:dataType json:Object.
 
-cx-behaviour:sender rdf:type cx-fx:Argument;
-  dc:description "Sender of the notification as a BPN."@en ;
-  dc:title "Notification Sender";
+cx-behaviour:sender rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Sender of the notification as a BPN."@en ;
+  rdfs:label "Notification Sender";
   cx-fx:dataType rdfs:Resource.
   
-cx-behaviour:senderConnector rdf:type cx-fx:Argument;
-  dc:description "Sender Address of the notification as a URL."@en ;
-  dc:title "Notification Sender Address";
+cx-behaviour:senderConnector rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Sender Address of the notification as a URL."@en ;
+  rdfs:label "Notification Sender Address";
   cx-fx:dataType rdfs:Resource.
 
-cx-behaviour:recipient rdf:type cx-fx:Argument;
-  dc:description "Recipient of the notification as a BPN."@en ;
-  dc:title "Notification Recipient";
+cx-behaviour:recipient rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Recipient of the notification as a BPN."@en ;
+  rdfs:label "Notification Recipient";
   cx-fx:dataType rdfs:Resource.
 
-cx-behaviour:recipientConnector rdf:type cx-fx:Argument;
-  dc:description "Recipient Address of the notification as a URL."@en ;
-  dc:title "Notification Recipient Address";
+cx-behaviour:recipientConnector rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Recipient Address of the notification as a URL."@en ;
+  rdfs:label "Notification Recipient Address";
   cx-fx:dataType rdfs:Resource.
 
-cx-behaviour:severity rdf:type cx-fx:Argument;
-  dc:description "Severity of the notification."@en ;
-  dc:title "Notification Severity";
+cx-behaviour:severity rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Severity of the notification."@en ;
+  rdfs:label "Notification Severity";
   cx-fx:dataType xsd:string.
 
-cx-behaviour:status rdf:type cx-fx:Argument;
-  dc:description "Status of the notification."@en ;
-  dc:title "Notification Status";
+cx-behaviour:status rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Status of the notification."@en ;
+  rdfs:label "Notification Status";
   cx-fx:dataType xsd:string.
 
-cx-behaviour:targetDate rdf:type cx-fx:Argument;
-  dc:description "Target Date of the notification."@en ;
-  dc:title "Notification Target Date";
+cx-behaviour:targetDate rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Target Date of the notification."@en ;
+  rdfs:label "Notification Target Date";
   cx-fx:dataType xsd:dateTime.
 
-cx-behaviour:timeStamp rdf:type cx-fx:Argument;
-  dc:description "Timestamp of the notification."@en ;
-  dc:title "Notification Timestamp";
+cx-behaviour:timeStamp rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Timestamp of the notification."@en ;
+  rdfs:label "Notification Timestamp";
   cx-fx:dataType xsd:dateTime.
 
-cx-behaviour:classification rdf:type cx-fx:Argument;
-  dc:description "Classification of the notification."@en ;
-  dc:title "Notification Classification";
+cx-behaviour:classification rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Classification of the notification."@en ;
+  rdfs:label "Notification Classification";
   cx-fx:dataType xsd:string.
 
-cx-behaviour:component rdf:type cx-fx:Argument;
-  dc:description "Component of the Predicition."@en ;
-  dc:title "Predicted Component";
+cx-behaviour:component rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Component of the Predicition."@en ;
+  rdfs:label "Predicted Component";
   cx-fx:dataType cx-vehicle:Part.
 
-cx-behaviour:metadata rdf:type cx-fx:Argument;
-  dc:description "Additional Metadata of the Loadspectrum."@en ;
-  dc:title "Loadspectrum Metadata";
+cx-behaviour:metadata rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Additional Metadata of the Loadspectrum."@en ;
+  rdfs:label "Loadspectrum Metadata";
   cx-fx:dataType json:Object.
 
-cx-behaviour:statusDate rdf:type cx-fx:Argument;
-  dc:description "Time of Recording."@en ;
-  dc:title "Loadspectrum Recording Time";
+cx-behaviour:statusDate rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Time of Recording."@en ;
+  rdfs:label "Loadspectrum Recording Time";
   cx-fx:dataType xsd:dateTime.
 
-cx-behaviour:statusOperatingHours rdf:type cx-fx:Argument;
-  dc:description "Operating Hours of Target Component at Time of Recording."@en ;
-  dc:title "Loadspectrum Operating Hours";
+cx-behaviour:statusOperatingHours rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Operating Hours of Target Component at Time of Recording."@en ;
+  rdfs:label "Loadspectrum Operating Hours";
   cx-fx:dataType xsd:float.
 
-cx-behaviour:statusMileage rdf:type cx-fx:Argument;
-  dc:description "Mileage of Component at Time of Recording."@en ;
-  dc:title "Loadspectrum Mileage";
+cx-behaviour:statusMileage rdfs:subPropertyOf cx-behaviour:RemainingUsefulLifeArgument;
+  rdfs:comment "Mileage of Component at Time of Recording."@en ;
+  rdfs:label "Loadspectrum Mileage";
   cx-fx:dataType xsd:int.
 
-cx-behaviour:countingUnit rdf:type cx-fx:Argument;
-  dc:description "Counting Unit of Load Spectrum."@en ;
-  dc:title "Loadspectrum Counting Unit";
+cx-behaviour:countingUnit rdfs:subPropertyOf cx-behaviour:prognosisFunctionArgument;
+  rdfs:comment "Counting Unit of Load Spectrum."@en ;
+  rdfs:label "Loadspectrum Counting Unit";
   cx-fx:dataType xsd:string.
 
-cx-behaviour:countingValue rdf:type cx-fx:Argument;
-  dc:description "Counting Value Name of Load Spectrum."@en ;
-  dc:title "Loadspectrum Counting Value";
+cx-behaviour:countingValue rdfs:subPropertyOf cx-behaviour:prognosisFunctionArgument;
+  rdfs:comment "Counting Value Name of Load Spectrum."@en ;
+  rdfs:label "Loadspectrum Counting Value";
   cx-fx:dataType xsd:string.
 
-cx-behaviour:countingMethod rdf:type cx-fx:Argument;
-  dc:description "Counting Method of Load Spectrum."@en ;
-  dc:title "Loadspectrum Counting Method";
+cx-behaviour:countingMethod rdfs:subPropertyOf cx-behaviour:prognosisFunctionArgument;
+  rdfs:comment "Counting Method of Load Spectrum."@en ;
+  rdfs:label "Loadspectrum Counting Method";
   cx-fx:dataType xsd:string.
 
-cx-behaviour:headerChannels rdf:type cx-fx:Argument;
-  dc:description "Channels of Load Spectrum."@en ;
-  dc:title "Loadspectrum Channels";
+cx-behaviour:headerChannels rdfs:subPropertyOf cx-behaviour:prognosisFunctionArgument;
+  rdfs:comment "Channels of Load Spectrum."@en ;
+  rdfs:label "Loadspectrum Channels";
   cx-fx:dataType json:Object.
 
-cx-behaviour:bodyClasses rdf:type cx-fx:Argument;
-  dc:description "Classes of Load Spectrum."@en ;
-  dc:title "Loadspectrum Classes";
+cx-behaviour:bodyClasses rdfs:subPropertyOf cx-behaviour:prognosisFunctionArgument;
+  rdfs:comment "Classes of Load Spectrum."@en ;
+  rdfs:label "Loadspectrum Classes";
   cx-fx:dataType json:Object.
 
-cx-behaviour:bodyCountsList rdf:type cx-fx:Argument;
-  dc:description "Counts List of Load Spectrum."@en ;
-  dc:title "Loadspectrum Counts List";
+cx-behaviour:bodyCountsList rdfs:subPropertyOf cx-behaviour:prognosisFunctionArgument;
+  rdfs:comment "Counts List of Load Spectrum."@en ;
+  rdfs:label "Loadspectrum Counts List";
   cx-fx:dataType json:Object.
 
-cx-behaviour:response rdf:type cx-fx:Result;
-  dc:description "The asynchronous notification response."@en ;
-  dc:title "Asynchronous notification response." ;
-  cx-fx:output cx-behaviour:remainingOperatingHours;
-  cx-fx:output cx-behaviour:remainingRunningDistance.
+cx-behaviour:RemainingUsefulLifeResult rdfs:subClassOf cx-fx:Result;
+  rdfs:comment "The asynchronous notification response."@en ;
+  rdfs:label "Asynchronous notification response." .
 
-cx-behaviour:remainingOperatingHours rdf:type cx-fx:ReturnValue;
-  dc:description "Predicted Operating Hours of Remaining Useful Life Response"@en ;
-  dc:title "Remaining Useful Life Operating Hours" ;
+cx-behaviour:remainingOperatingHours rdfs:subPropertyOf cx-fx:returnValue;
+  rdfs:domain cx-behaviour:RemainingUsefulLifeResult ;
+  rdfs:comment "Predicted Operating Hours of Remaining Useful Life Response"@en ;
+  rdfs:label "Remaining Useful Life Operating Hours" ;
   cx-fx:dataType xsd:float.
 
-cx-behaviour:remainingRunningDistance rdf:type cx-fx:ReturnValue;
-  dc:description "Predicted Distance of Remaining Useful Life Response"@en ;
-  dc:title "Remaining Useful Life Distance" ;
+cx-behaviour:remainingRunningDistance rdfs:subPropertyOf cx-fx:returnValue;
+  rdfs:domain cx-behaviour:RemainingUsefulLifeResult ;
+  rdfs:comment "Predicted Distance of Remaining Useful Life Response"@en ;
+  rdfs:label "Remaining Useful Life Distance" ;
   cx-fx:dataType xsd:int.
+
+cx-behaviour:HealthIndicatorResult rdfs:subClassOf cx-fx:Result ;
+  rdfs:comment"Health Indicator is part of a indicator batch."@en ;
+  rdfs:label "Health Indicator" .
+
+cx-behaviour:requestComponentId rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Health Indicator Input relates to a component."@en ;
+  rdfs:label "Health Indicator Component Id";
+  cx-fx:argumentName "componentId".
+  
+cx-behaviour:classifiedLoadCollectiveProjectDescription rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Load Collective has a project description."@en ;
+  rdfs:label "Classified Load Collective Project Description";
+  cx-fx:mandatory "false"^^xsd:boolean;
+  cx-fx:argumentName "classifiedLoadCollective.metadata.projectDescription".
+
+cx-behaviour:classifiedLoadCollectiveComponentDescription rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Load Collective has a component description."@en ;
+  rdfs:label "Classified Load Collective Component Description";
+  cx-fx:argumentName "classifiedLoadCollective.metadata.componentDescription".
+
+cx-behaviour:classifiedLoadCollectiveCountingValue rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Load Collective has a value for the counting dimension."@en ;
+  rdfs:label "Classified Load Collective Counting Value";
+  cx-fx:mandatory "false"^^xsd:boolean;
+  cx-fx:argumentName "classifiedLoadCollective.header.countingValue".
+
+cx-behaviour:classifiedLoadCollectiveCountingUnit rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Load Collective has a unit for the counting dimension."@en ;
+  rdfs:label "Classified Load Collective Counting Unit";
+  cx-fx:argumentName "classifiedLoadCollective.header.countingUnit".
+
+cx-behaviour:classifiedLoadCollectiveCountingMethod rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Load Collective has a method for the counting dimension."@en ;
+  rdfs:label "Classified Load Collective Counting Method";
+  cx-fx:argumentName "classifiedLoadCollective.header.countingMethod".
+
+cx-behaviour:classifiedLoadCollectiveChannels rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Load Collective has descriptors for all channels."@en ;
+  rdfs:label "Classified Load Collective Channels";
+  cx-fx:argumentName "classifiedLoadCollective.header.channels".
+
+cx-behaviour:classifiedLoadCollectiveCounts rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Load Collective has a body with the raw measurements."@en ;
+  rdfs:label "Classified Load Collective Counts";
+  cx-fx:argumentName "classifiedLoadCollective.body.counts".
+
+cx-behaviour:classifiedLoadCollectiveClasses rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Load Collective has a body with the class indices."@en ;
+  rdfs:label "Classified Load Collective Classes";
+  cx-fx:argumentName "classifiedLoadCollective.body.classes".
+
+cx-behaviour:adaptionValueVersion rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Health Indicator Adaption needs a version."@en ;
+  rdfs:label "Adaption Value List Version";
+  cx-fx:argumentName "adaptionValueList.version".
+
+cx-behaviour:adaptionValueTimestamp rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Health Indicator Adaption needs a timestamp."@en ;
+  rdfs:label "Adaption Value List Timestamp";
+  cx-fx:argumentName "adaptionValueList.timestamp".
+
+cx-behaviour:adaptionValueMileage rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Health Indicator Adaption needs a mileage of the embedding vehicle."@en ;
+  rdfs:label "Adaption Value List Mileage";
+  cx-fx:argumentName "adaptionValueList.mileage_km".
+
+cx-behaviour:adaptionValueOperatingTime rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Health Indicator Adaption needs an operating time of the embedding vehicle."@en ;
+  rdfs:label "Adaption Value List Operating Time";
+  cx-fx:argumentName "adaptionValueList.operatingtime_s".
+
+cx-behaviour:adaptionValueList rdfs:subPropertyOf cx-behaviour:HealthIndicationArgument ;
+  rdfs:comment"A Health Indicator Adaption needs an array of adaption values."@en ;
+  rdfs:label "Adaption Value List Values";
+  cx-fx:argumentName "adaptionValueList.values".
+
+cx-behaviour:indicatorVersion rdfs:subProperty cx-fx:returnValue;
+   rdfs:domain cx-behaviour:HealthIndicatorResult;
+   rdfs:comment"Version of the health indicator prognosis."@en ;
+   rdfs:label "Health Indicator Prognosis Version" ;
+   cx-fx:valuePath "version";
+   cx-fx:dataType xsd:string.
+
+cx-behaviour:responseComponentId rdfs:subProperty cx-fx:returnValue;
+   rdfs:domain cx-behaviour:HealthIndicatorResult;
+   rdfs:comment"Component Id of the health indicator prognosis."@en ;
+   rdfs:label "Health Indicator Prognosis Component Id" ;
+   cx-fx:valuePath "componentId";
+   cx-fx:dataType xsd:string.
+
+cx-behaviour:healthIndicatorValues rdfs:subProperty cx-fx:returnValue;
+   rdfs:domain cx-behaviour:HealthIndicatorResult;
+   rdfs:comment"Health Indicator Values are percentages."@en ;
+   rdfs:label "Health Indicator Values" ;
+   cx-fx:valuePath "healthIndicatorValues";
+   cx-fx:dataType json:Object.
 
 ###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

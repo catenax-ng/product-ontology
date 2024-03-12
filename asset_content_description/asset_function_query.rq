@@ -1,0 +1,45 @@
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX cx-sh: <https://w3id.org/catenax/ontology/schema#>
+PREFIX cx-reliability: <https://w3id.org/catenax/ontology/reliability#> 
+PREFIX cx-schema: <https://w3id.org/catenax/ontology/schema#>
+PREFIX cx-behaviour: <https://w3id.org/catenax/ontology/behaviour#>
+PREFIX cx-taxo: <https://w3id.org/catenax/ontology/taxonomy#>
+
+#This query returns the required assets and arguments for the selected function result and the observed part types.
+
+select distinct ?assetTarget ?nodeShapeTarget ?propertyShapeTarget where {  
+    
+    VALUES ?result {cx-behaviour:RemainingUsefulLifeResult}
+    
+	#source
+    ?output sh:path ?result.
+    ?output cx-sh:outputOf ?functionShape. 
+  	?assetFunction cx-sh:shapeObject ?functionShape.
+    ?functionShape cx-sh:extensionOf* ?parentFunctionShape.
+    ?parentFunctionShape sh:property ?functionProperty.
+    ?functionProperty cx-sh:hasAsArgument ?argument.
+    
+    #target
+    ?assetTarget cx-sh:shapeObject ?nodeShape.
+    ?nodeShape sh:property ?propertyShape.
+    ?propertyShape sh:path ?argument. 
+
+    #matching
+    ?functionProperty sh:in ?parameters.
+    ?parameters rdf:rest*/rdf:first ?value.
+    ?propertyShape sh:in ?parameters_target.
+    ?parameters_target rdf:rest*/rdf:first ?value.
+    
+    { 
+        select ?assetTarget ?nodeShapeTarget ?propertyShapeTarget 
+     
+        where {
+    	    ?assetTarget cx-sh:shapeObject ?nodeShapeTarget.
+    	    ?nodeShapeTarget sh:property ?propertyShapeTarget.
+    	    ?propertyShapeTarget sh:path ?argument.
+       }
+    }
+}

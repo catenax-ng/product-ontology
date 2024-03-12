@@ -1,0 +1,171 @@
+#############################################################################
+# Copyright (c) 2022,2023 Contributors to Catena-X 
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License, Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0.
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+#############################################################################
+# An example of dataspace asset definitions for developing polymorphic, 
+# navigating skills 
+#############################################################################
+
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix edc: <https://w3id.org/edc/v0.0.1/ns/> .
+@prefix cx-common: <https://w3id.org/catenax/ontology/common#> .
+@prefix cx-core: <https://w3id.org/catenax/ontology/core#> .
+@prefix cx-vehicle: <https://w3id.org/catenax/ontology/vehicle#> .
+@prefix cx-fx: <https://w3id.org/catenax/ontology/function#> .
+@prefix cx-behaviour: <https://w3id.org/catenax/ontology/behaviour#> .
+@prefix cx-reliability: <https://w3id.org/catenax/ontology/reliability#> .
+@prefix cx-sh: <https://w3id.org/catenax/ontology/schema#> .
+@prefix cx-taxo: <https://w3id.org/catenax/ontology/taxonomy#> .
+@prefix asset_a: <https://example.com/asset_a#> .
+@prefix asset_b: <https://example.com/asset_b#> .
+@prefix asset_c: <https://example.com/asset_c#> .
+
+
+# The Shapes graph of Asset 'A'
+asset_a:asset_a a cx-common:GraphAsset;
+ edc:description "Function Asset Implementing Prognosis Functions (RemainingUsefulLife)"^^xsd:string;
+ cx-sh:shapeObject asset_a:PrognosisFunctionShape, asset_a:RemainingUsefulLifeShape, asset_a:HealthIndicationShape.
+
+# Prognosis Function
+asset_a:PrognosisFunctionShape a sh:NodeShape ;
+    sh:targetClass cx-behaviour:PrognosisFunction;
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:countingMethod;
+        sh:path cx-behaviour:countingMethod;
+    ];
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:countingValue;
+        sh:path cx-behaviour:countingValue;
+    ];
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:countingUnit;
+        sh:path cx-behaviour:countingUnit;
+    ];
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:channels;
+        sh:path cx-behaviour:headerChannels;
+    ];
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:classes;
+        sh:path cx-behaviour:bodyClasses;
+    ].
+
+
+asset_a:RemainingUsefulLifeShape a sh:NodeShape ;
+    cx-sh:extensionOf asset_a:PrognosisFunctionShape;
+    sh:targetClass cx-behaviour:RemainingUsefulLife ;
+      sh:property[
+        cx-sh:hasAsArgument cx-reliability:observationOf;
+        sh:path cx-behaviour:observationType;
+        sh:in ( cx-taxo:GearSet cx-taxo:GearOil );
+    ];
+    sh:property asset_a:RemainingUsefulLifeResultSahpe.
+
+asset_a:RemainingUsefulLifeResult  a sh:PropertyShape;
+    cx-sh:outputOf asset_a:RemainingUsefulLifeShape;
+    sh:path cx-behaviour:RemainingUsefulLifeResult .
+
+
+# The Shapes graph of Asset 'B'
+asset_b:asset_b a cx-common:GraphAsset;
+ edc:description "Function Asset Implementing Prognosis Functions (HealthIndication)"^^xsd:string;
+ cx-sh:shapeObject asset_b:PrognosisFunctionShape, asset_b:RemainingUsefulLifeShape, asset_b:HealthIndicationShape.
+
+# Prognosis Function
+asset_b:PrognosisFunctionShape a sh:NodeShape ;
+    sh:targetClass cx-behaviour:PrognosisFunction;
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:countingMethod;
+        sh:path cx-behaviour:countingMethod;
+    ];
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:countingValue;
+        sh:path cx-behaviour:countingValue;
+    ];
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:countingUnit;
+        sh:path cx-behaviour:countingUnit;
+    ];
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:channels;
+        sh:path cx-behaviour:headerChannels;
+    ];
+    sh:property[
+        cx-sh:hasAsArgument cx-reliability:classes;
+        sh:path cx-behaviour:bodyClasses;
+    ].
+
+asset_b:HealthIndicationShape a sh:NodeShape ;
+    cx-sh:extensionOf asset_b:PrognosisFunctionShape;
+    sh:targetClass cx-behaviour:HealthIndication ;
+      sh:property[
+        cx-sh:hasAsArgument cx-reliability:observationOf;
+        sh:path cx-behaviour:observationType;
+        sh:in ( cx-taxo:Clutch );
+    ];
+    sh:property asset_b:HealthIndicationResultShape.
+
+asset_b:HealthIndicationResultShape  a sh:PropertyShape;
+    cx-sh:outputOf asset_b:HealthIndicationShape;
+    sh:path cx-behaviour:HealthIndicationResult .
+
+
+
+# The Shapes graph of Asset 'C'
+asset_c:asset_c a cx-common:GraphAsset;
+ edc:description "Sample Asset Hosting Load Spectrum of Parts (GearSet GearOil Clutch)"^^xsd:string;
+ cx-sh:shapeObject asset_c:LoadSpectrumShape.
+ 
+asset_c:LoadSpectrumShape a sh:NodeShape ;
+    sh:targetClass  cx-reliability:LoadSpectrum;
+    sh:property asset_c:observationOfShape, 
+                asset_c:countingValueShape, 
+                asset_c:countingUnitShape, 
+                asset_c:countingMethodShape, 
+                asset_c:channelsShape, 
+                asset_c:classesShape, 
+                asset_c:valuesShape.
+
+asset_c:observationOfShape a sh:PropertyShape;
+    sh:path cx-reliability:observationOf;
+    sh:in (cx-taxo:GearOil cx-taxo:GearSet cx-taxo:Clutch).
+
+asset_c:countingValueShape a sh:PropertyShape;
+    sh:path cx-reliability:countingValue.
+
+asset_c:countingUnitShape a sh:PropertyShape;
+    sh:path cx-reliability:countingUnit.
+
+asset_c:countingMethodShape a sh:PropertyShape;
+    sh:path cx-reliability:countingMethod.
+
+asset_c:countingMethodShape a sh:PropertyShape;
+    sh:path cx-reliability:countingMethod.
+
+asset_c:channelsShape a sh:PropertyShape;
+    sh:path cx-reliability:channels.
+
+asset_c:classesShape a sh:PropertyShape;
+    sh:path cx-reliability:classes.
+
+asset_c:valuesShape a sh:PropertyShape;
+    sh:path cx-reliability:values.

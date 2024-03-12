@@ -32,7 +32,7 @@
 @prefix schema: <https://schema.org/> .
 @prefix cx-core: <https://w3id.org/catenax/ontology/core#> .
 @prefix cx-common: <https://w3id.org/catenax/ontology/common#> .
-@base <https://w3id.org/catenax/ontology/function> .
+@base <https://w3id.org/catenax/ontology/function#> .
 
 <https://w3id.org/catenax/ontology/function> rdf:type owl:Ontology ;
                                               owl:imports <file:common_ontology.ttl> ,
@@ -68,6 +68,11 @@ dc:description rdf:type owl:AnnotationProperty .
 dc:title rdf:type owl:AnnotationProperty .
 
 
+###  http://www.w3.org/2002/07/owl#resultConfigurationProperty
+owl:resultConfigurationProperty rdf:type owl:AnnotationProperty ;
+                                rdfs:label "Result Configuration Property"@en .
+
+
 ###  http://www.w3.org/2004/02/skos/core#altLabel
 skos:altLabel rdf:type owl:AnnotationProperty .
 
@@ -84,6 +89,163 @@ skos:note rdf:type owl:AnnotationProperty .
 skos:prefLabel rdf:type owl:AnnotationProperty .
 
 
+###  https://w3id.org/catenax/ontology/function#argumentConfigurationProperty
+cx-fx:argumentConfigurationProperty rdf:type owl:AnnotationProperty ;
+                                    rdfs:label "Argument Configuration Property"@en .
+
+
+###  https://w3id.org/catenax/ontology/function#argumentName
+cx-fx:argumentName rdf:type owl:AnnotationProperty ;
+                   rdfs:comment "Determines the name or index of the function argument." ;
+                   skos:altLabel "Argument Name or Index"@en ;
+                   skos:example "age" ;
+                   skos:prefLabel "Argument Name"@en ;
+                   rdfs:subPropertyOf cx-fx:argumentConfigurationProperty ;
+                   rdfs:range xsd:string .
+
+
+###  https://w3id.org/catenax/ontology/function#batch
+cx-fx:batch rdf:type owl:AnnotationProperty ;
+            rdfs:comment "Determines maximal batch size for function invocations. Default is '1' which means that each invocation is done separately"@en ;
+            skos:altLabel "Maximal Batch Size"@en ;
+            skos:example "100"^^xsd:long ;
+            skos:prefLabel "Batch Size"@en ;
+            rdfs:subPropertyOf cx-fx:functionConfigurationProperty ;
+            rdfs:range xsd:long ;
+            rdfs:domain cx-fx:Function .
+
+
+###  https://w3id.org/catenax/ontology/function#callbackProperty
+cx-fx:callbackProperty rdf:type owl:AnnotationProperty ;
+                       rdfs:comment "Determines a (set of) paths in the input document and the output response under which the callback address (see <https://w3id.org/catenax/ontology/function#callbackAddress>) and the referring callback id will be transmitted."@en ;
+                       skos:altLabel "Function Callback ID/Address Property"@en ;
+                       skos:example "callbackAddress" ;
+                       skos:prefLabel "Callback Address"@en ;
+                       rdfs:subPropertyOf cx-fx:functionConfigurationProperty ;
+                       rdfs:range xsd:string ;
+                       rdfs:domain cx-fx:Function .
+
+
+###  https://w3id.org/catenax/ontology/function#dataType
+cx-fx:dataType rdf:type owl:AnnotationProperty ;
+               rdfs:comment "Determines the data type of an argument or return value." ;
+               skos:altLabel "Argument or Result Data Type"@en ;
+               skos:example xsd:long ,
+                            json:Object ;
+               skos:prefLabel "Argument or Result Data Type"@en ;
+               rdfs:subPropertyOf cx-fx:argumentConfigurationProperty .
+
+
+###  https://w3id.org/catenax/ontology/function#default
+cx-fx:default rdf:type owl:AnnotationProperty ;
+              rdfs:comment "Determines a default for the given argument which is taken if this is a mandatory argument (see <https://w3id.org/catenax/ontology/function#mandatory>)"@en ;
+              skos:altLabel "Argument Default"@en ;
+              skos:example <urn:default:uri> ,
+                           "a default string" ;
+              skos:prefLabel "Default"@en ;
+              rdfs:subPropertyOf cx-fx:argumentConfigurationProperty ;
+              rdfs:range xsd:anyType .
+
+
+###  https://w3id.org/catenax/ontology/function#functionConfigurationProperty
+cx-fx:functionConfigurationProperty rdf:type owl:AnnotationProperty ;
+                                    rdfs:label "Function Configuration Property"@en .
+
+
+###  https://w3id.org/catenax/ontology/function#inputProperty
+cx-fx:inputProperty rdf:type owl:AnnotationProperty ;
+                    rdfs:comment "Determines a path/name in the input document under which all input arguments are encoded. Default is '.'"@en ;
+                    skos:altLabel "Function Input Property"@en ;
+                    skos:example "." ;
+                    skos:prefLabel "Input Property"@en ;
+                    rdfs:subPropertyOf cx-fx:argumentConfigurationProperty ;
+                    rdfs:range xsd:string ;
+                    rdfs:domain cx-fx:Function .
+
+
+###  https://w3id.org/catenax/ontology/function#invocationIdProperty
+cx-fx:invocationIdProperty rdf:type owl:AnnotationProperty ;
+                           rdfs:comment "Determines a (set of) paths in the input document under which the IRI of the invocation (instance of Function) will be transmitted."@en ;
+                           skos:altLabel "Function Invocation ID Property"@en ;
+                           skos:example "requestId" ;
+                           skos:prefLabel "Invocation ID Property"@en ;
+                           rdfs:subPropertyOf cx-fx:functionConfigurationProperty ;
+                           rdfs:range xsd:string ;
+                           rdfs:domain cx-fx:Function .
+
+
+###  https://w3id.org/catenax/ontology/function#invocationMethod
+cx-fx:invocationMethod rdf:type owl:AnnotationProperty ;
+                       rdfs:comment "Determines the invocation method of the function in case that the target service provides several possibilities."@en ;
+                       skos:example "DEFAULT" ,
+                                    "GET" ,
+                                    "POST-JSON" ,
+                                    "POST-JSON-MF" ,
+                                    "POST-XML" ,
+                                    "POST-XML-MF" ;
+                       skos:prefLabel "Invocation Method"@en ;
+                       rdfs:subPropertyOf cx-fx:functionConfigurationProperty ;
+                       rdfs:range xsd:string ;
+                       rdfs:domain cx-fx:Function .
+
+
+###  https://w3id.org/catenax/ontology/function#outputProperty
+cx-fx:outputProperty rdf:type owl:AnnotationProperty ;
+                     rdfs:comment "Determines a path/name in the output response under which all output arguments are encoded. Default is '.'"@en ;
+                     skos:altLabel "Function Output Property"@en ;
+                     skos:example "." ;
+                     skos:prefLabel "Output of Function"@en ;
+                     rdfs:subPropertyOf owl:resultConfigurationProperty ;
+                     rdfs:range xsd:string ;
+                     rdfs:domain cx-fx:Result .
+
+
+###  https://w3id.org/catenax/ontology/function#priority
+cx-fx:priority rdf:type owl:AnnotationProperty ;
+               rdfs:comment "Determines the priority with which the argument is processed. Default is '10'"@en ;
+               skos:altLabel "Argument Priority"@en ;
+               skos:example -1 ;
+               skos:prefLabel "Priority"@en ;
+               rdfs:subPropertyOf cx-fx:argumentConfigurationProperty ;
+               rdfs:range xsd:integer .
+
+
+###  https://w3id.org/catenax/ontology/function#resultConfigurationProperty
+cx-fx:resultConfigurationProperty rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/catenax/ontology/function#resultIdProperty
+cx-fx:resultIdProperty rdf:type owl:AnnotationProperty ;
+                       rdfs:comment "Determines a path in the output response under which the IRI of the result component will be transmitted."@en ;
+                       skos:altLabel "Function Result ID Property"@en ;
+                       skos:example "componentId" ;
+                       skos:prefLabel "Result ID Property"@en ;
+                       rdfs:subPropertyOf owl:resultConfigurationProperty ;
+                       rdfs:range xsd:string ;
+                       rdfs:domain cx-fx:Result .
+
+
+###  https://w3id.org/catenax/ontology/function#targetUri
+cx-fx:targetUri rdf:type owl:AnnotationProperty ;
+                rdfs:comment "The target URI of the function should resolve to some existing service (URL)."@en ;
+                skos:example <class:org.eclipse.tractusx.agents.remoting.TestFunction#test> ,
+                             <http://tiera-backend:5005/api/rul> ,
+                             <https://api.agify.io> ;
+                skos:prefLabel "Target URI"@en ;
+                rdfs:subPropertyOf cx-fx:functionConfigurationProperty ;
+                rdfs:range xsd:string .
+
+
+###  https://w3id.org/catenax/ontology/function#valuePath
+cx-fx:valuePath rdf:type owl:AnnotationProperty ;
+                rdfs:comment "Determines a path in the output response under which a return value is transmitted."@en ;
+                skos:altLabel "Function Result Value Path"@en ;
+                skos:example "age" ;
+                skos:prefLabel "Value Path"@en ;
+                rdfs:subPropertyOf cx-fx:argumentConfigurationProperty ;
+                rdfs:range xsd:string .
+
+
 #################################################################
 #    Datatypes
 #################################################################
@@ -92,28 +254,16 @@ skos:prefLabel rdf:type owl:AnnotationProperty .
 xsd:anyType rdf:type rdfs:Datatype .
 
 
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
 #################################################################
 #    Object Properties
 #################################################################
 
-###  https://w3id.org/catenax/ontology/function#input
-cx-fx:input rdf:type owl:ObjectProperty ;
-            rdfs:domain cx-fx:Function ;
-            rdfs:range cx-fx:Argument ;
-            rdfs:comment "Describes the arguments of a function."@en ;
-            skos:prefLabel "Input Argument"@en .
-
-
 ###  https://w3id.org/catenax/ontology/function#output
 cx-fx:output rdf:type owl:ObjectProperty ;
-             rdfs:domain cx-fx:Result ;
-             rdfs:range cx-fx:ReturnValue ;
-             skos:altLabel "Function Return Output"@en ;
-             skos:prefLabel "Output"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#result
-cx-fx:result rdf:type owl:ObjectProperty ;
              rdfs:domain cx-fx:Function ;
              rdfs:range cx-fx:Result ;
              rdfs:comment "Describes the result of a function."@en ;
@@ -124,154 +274,17 @@ cx-fx:result rdf:type owl:ObjectProperty ;
 #    Data properties
 #################################################################
 
-###  https://w3id.org/catenax/ontology/function#argumentName
-cx-fx:argumentName rdf:type owl:DatatypeProperty ;
-                   rdfs:subPropertyOf owl:topDataProperty ;
-                   rdfs:domain cx-fx:Argument ;
-                   rdfs:range xsd:string ;
-                   rdfs:comment "Determines the name or index of the function argument." ;
-                   skos:altLabel "Argument Name or Index"@en ;
-                   skos:example "age" ,
-                                "arg0" ;
-                   skos:prefLabel "Argument Name"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#batch
-cx-fx:batch rdf:type owl:DatatypeProperty ;
-            rdfs:subPropertyOf owl:topDataProperty ;
-            rdfs:domain cx-fx:Function ;
-            rdfs:range xsd:long ;
-            rdfs:comment "Determines maximal batch size for function invocations. Default is '1' which means that each invocation is done separately"@en ;
-            skos:altLabel "Maximal Batch Size"@en ;
-            skos:example "100"^^xsd:long ;
-            skos:prefLabel "Batch Size"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#callbackProperty
-cx-fx:callbackProperty rdf:type owl:DatatypeProperty ;
-                       rdfs:subPropertyOf owl:topDataProperty ;
-                       rdfs:domain cx-fx:Function ,
-                                   cx-fx:Result ;
-                       rdfs:range xsd:string ;
-                       rdfs:comment "Determines a (set of) paths in the input document and the output response under which the callback address (see <https://w3id.org/catenax/ontology/function#callbackAddress>) and the referring callback id will be transmitted."@en ;
-                       skos:altLabel "Function Callback ID/Address Property"@en ;
-                       skos:example "callbackAddress" ;
-                       skos:prefLabel "Callback Address"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#dataType
-cx-fx:dataType rdf:type owl:DatatypeProperty ;
-               rdfs:domain cx-fx:Argument ,
-                           cx-fx:ReturnValue ;
-               rdfs:comment "Determines the data type of an argument or return value." ;
-               skos:altLabel "Argument or Result Data Type"@en ;
-               skos:example xsd:long ,
-                            json:Object ;
-               skos:prefLabel "Argument or Result Data Type"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#default
-cx-fx:default rdf:type owl:DatatypeProperty ;
-              rdfs:subPropertyOf owl:topDataProperty ;
-              rdfs:domain cx-fx:Argument ;
-              rdfs:range xsd:anyType ;
-              rdfs:comment "Determines a default for the given argument which is taken if this is a mandatory argument (see <https://w3id.org/catenax/ontology/function#mandatory>)"@en ;
-              skos:altLabel "Argument Default"@en ;
-              skos:example <urn:default:uri> ,
-                           "a default string"^^xsd:string ;
-              skos:prefLabel "Default"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#inputProperty
-cx-fx:inputProperty rdf:type owl:DatatypeProperty ;
-                    rdfs:subPropertyOf owl:topDataProperty ;
-                    rdfs:domain cx-fx:Function ;
-                    rdfs:range xsd:string ;
-                    rdfs:comment "Determines a path/name in the input document under which all input arguments are encoded. Default is '.'"@en ;
-                    skos:altLabel "Function Input Property"@en ;
-                    skos:example "." ;
-                    skos:prefLabel "Input Property"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#invocationIdProperty
-cx-fx:invocationIdProperty rdf:type owl:DatatypeProperty ;
-                           rdfs:subPropertyOf owl:topDataProperty ;
-                           rdfs:domain cx-fx:Function ;
-                           rdfs:range xsd:string ;
-                           rdfs:comment "Determines a (set of) paths in the input document under which the IRI of the invocation (instance of Function) will be transmitted."@en ;
-                           skos:altLabel "Function Invocation ID Property"@en ;
-                           skos:example "requestId" ;
-                           skos:prefLabel "Invocation ID Property"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#invocationMethod
-cx-fx:invocationMethod rdf:type owl:DatatypeProperty ;
-                       rdfs:subPropertyOf owl:topDataProperty ;
-                       rdfs:domain cx-fx:Function ;
-                       rdfs:range xsd:string ;
-                       rdfs:comment "Determines the invocation method of the function in case that the target service provides several possibilities."@en ;
-                       skos:example "DEFAULT" ,
-                                    "GET" ,
-                                    "POST-JSON" ,
-                                    "POST-JSON-MF" ,
-                                    "POST-XML" ,
-                                    "POST-XML-MF" ;
-                       skos:prefLabel "Invocation Method"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#outputProperty
-cx-fx:outputProperty rdf:type owl:DatatypeProperty ;
-                     rdfs:subPropertyOf owl:topDataProperty ;
-                     rdfs:domain cx-fx:Result ;
-                     rdfs:range xsd:string ;
-                     rdfs:comment "Determines a path/name in the output response under which all output arguments are encoded. Default is '.'"@en ;
-                     skos:altLabel "Function Output Property"@en ;
-                     skos:example "." ;
-                     skos:prefLabel "Output of Function"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#priority
-cx-fx:priority rdf:type owl:DatatypeProperty ;
+###  https://w3id.org/catenax/ontology/function#argument
+cx-fx:argument rdf:type owl:DatatypeProperty ;
                rdfs:subPropertyOf owl:topDataProperty ;
-               rdfs:domain cx-fx:Argument ;
-               rdfs:range xsd:integer ;
-               rdfs:comment "Determines the priority with which the argument is processed. Default is '10'"@en ;
-               skos:altLabel "Argument Priority"@en ;
-               skos:example -1 ;
-               skos:prefLabel "Priority"@en .
+               rdfs:domain cx-fx:Function ;
+               rdfs:label "Function Argument"@en .
 
 
-###  https://w3id.org/catenax/ontology/function#resultIdProperty
-cx-fx:resultIdProperty rdf:type owl:DatatypeProperty ;
-                       rdfs:subPropertyOf owl:topDataProperty ;
-                       rdfs:domain cx-fx:Result ;
-                       rdfs:range xsd:string ;
-                       rdfs:comment "Determines a path in the output response under which the IRI of the result component will be transmitted."@en ;
-                       skos:altLabel "Function Result ID Property"@en ;
-                       skos:example "componentId" ;
-                       skos:prefLabel "Result ID Property"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#targetUri
-cx-fx:targetUri rdf:type owl:DatatypeProperty ;
-                rdfs:domain cx-fx:Function ;
-                rdfs:range xsd:string ;
-                rdfs:comment "The target URI of the function should resolve to some existing service (URL)."@en ;
-                skos:example <class:org.eclipse.tractusx.agents.remoting.TestFunction#test> ,
-                             <http://tiera-backend:5005/api/rul> ,
-                             <https://api.agify.io> ;
-                skos:prefLabel "Target URI"@en .
-
-
-###  https://w3id.org/catenax/ontology/function#valuePath
-cx-fx:valuePath rdf:type owl:DatatypeProperty ;
-                rdfs:subPropertyOf owl:topDataProperty ;
-                rdfs:domain cx-fx:ReturnValue ;
-                rdfs:range xsd:string ;
-                rdfs:comment "Determines a path in the output response under which a return value is transmitted."@en ;
-                skos:altLabel "Function Result Value Path"@en ;
-                skos:example "age" ;
-                skos:prefLabel "Value Path"@en .
+###  https://w3id.org/catenax/ontology/function#returnValue
+cx-fx:returnValue rdf:type owl:DatatypeProperty ;
+                  rdfs:domain cx-fx:Result ;
+                  rdfs:label "Return value of a function."@en .
 
 
 #################################################################
@@ -280,13 +293,6 @@ cx-fx:valuePath rdf:type owl:DatatypeProperty ;
 
 ###  https://w3id.org/catenax/ontology/core#ConceptualObject
 cx-core:ConceptualObject rdf:type owl:Class .
-
-
-###  https://w3id.org/catenax/ontology/function#Argument
-cx-fx:Argument rdf:type owl:Class ;
-               rdfs:subClassOf cx-core:ConceptualObject ;
-               skos:altLabel "Function Argument Definition"@en ;
-               skos:prefLabel "Argument"@en .
 
 
 ###  https://w3id.org/catenax/ontology/function#Function
@@ -300,14 +306,7 @@ cx-fx:Function rdf:type owl:Class ;
 cx-fx:Result rdf:type owl:Class ;
              rdfs:subClassOf cx-core:ConceptualObject ;
              skos:altLabel "Function Result Definition"@en ;
-             skos:prefLabel "Function Result"@en .
+             skos:prefLabel "Result"@en .
 
 
-###  https://w3id.org/catenax/ontology/function#ReturnValue
-cx-fx:ReturnValue rdf:type owl:Class ;
-                  rdfs:subClassOf cx-core:ConceptualObject ;
-                  skos:altLabel "Function Return Value Definition"@en ;
-                  skos:prefLabel "Return Value"@en .
-
-
-###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
+###  Generated by the OWL API (version 4.5.26.2023-07-17T20:34:13Z) https://github.com/owlcs/owlapi
